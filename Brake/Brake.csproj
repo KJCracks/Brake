@@ -32,17 +32,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Xml" />
     <Reference Include="Ionic.Zip">
-      <HintPath>..\packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
+      <HintPath>..\lib\Ionic.Zip.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppHelper.cs" />
+    <Compile Include="..\PlistCS\PlistCS\Src\Plist.cs">
+      <Link>Src\Plist.cs</Link>
+    </Compile>
+    <Compile Include="IPAInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <None Include="packages.config" />
+    <Folder Include="Src\" />
   </ItemGroup>
 </Project>

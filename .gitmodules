@@ -1,0 +1,3 @@
+[submodule "PlistCS"]
+	path = PlistCS
+	url = https://github.com/animetrics/PlistCS.git
