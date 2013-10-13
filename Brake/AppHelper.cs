@@ -18,7 +18,7 @@ namespace Brake
 				Console.WriteLine ("Debug: " + debugString);
 			}
 		}
-		public bool setupDirectory(String location) {
+		public Container getIPAs(String location) {
 			DirectoryInfo di = new DirectoryInfo(location);
 			Container container = new Container ();
 			FileInfo[] files;
@@ -26,7 +26,7 @@ namespace Brake
 
 			if (!di.Exists) {
 				Console.WriteLine ("Error: Directory not found?");
-				return false;
+				return null;
 			}
 			try
 			{
@@ -36,7 +36,7 @@ namespace Brake
 			{
 				Console.WriteLine ("Error: Exception occured, perhaps no permissions for directory?");
 				Console.WriteLine (e.ToString ());
-				return false;
+				return null;
 			}
 			foreach (FileInfo file in files) {
 				Debug ("IPA found: " + file.Name);
@@ -54,7 +54,7 @@ namespace Brake
 							string plistLocation = Path.Combine (GetTemporaryDirectory(), e.FileName);
 							//unpackDirectory + "/" + e.FileName;
 
-							Dictionary<string, object> plist = (Dictionary<string,object>)Plist.readPlist (unpackDirectory + "/" + e.FileName);
+							Dictionary<string, object> plist = (Dictionary<string,object>)Plist.readPlist (plistLocation);
 							Debug ("plist data: " + plist.ToString ());
 							Debug ("Bundle Name: " + plist ["CFBundleExecutable"]);
 							IPAInfo info = new IPAInfo ();
@@ -73,18 +73,36 @@ namespace Brake
 				serializer.Serialize (writer, container); 
 				Debug ("serializing data");			
 			}
-			Directory.Delete (GetTemporaryDirectory());
-			return true;
+			DeleteDirectory (GetTemporaryDirectory ());
+			return container;
 		}
-
-		private string tempDir;
-		public string GetTemporaryDirectory()
+			
+		private static string tempDir;
+		public static string GetTemporaryDirectory()
 		{
 			if (tempDir == null) {
 				tempDir = Path.Combine (Path.GetTempPath (), Path.GetRandomFileName ());
 				Directory.CreateDirectory (tempDir);
 			}
 			return tempDir;
+		}
+		public static void DeleteDirectory(string target_dir)
+		{
+			string[] files = Directory.GetFiles(target_dir);
+			string[] dirs = Directory.GetDirectories(target_dir);
+
+			foreach (string file in files)
+			{
+				File.SetAttributes(file, FileAttributes.Normal);
+				File.Delete(file);
+			}
+
+			foreach (string dir in dirs)
+			{
+				DeleteDirectory(dir);
+			}
+
+			Directory.Delete(target_dir, false);
 		}
 	}
 }

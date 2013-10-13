@@ -48,18 +48,38 @@ namespace Brake
 					location = Environment.GetEnvironmentVariable ("HOME") + "/Music/iTunes/iTunes Media/Mobile Applications";
 					break;
 				}
-			case Platform.Windows:
-				{
-					//windows sucks
-					break;
-				}
+			case Platform.Windows: {
+				//windows sucks
+				string path = Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+				path = Path.Combine (path, "My Music\\iTunes\\iTunes Media\\Mobile Applications\\");
+				break;
+			}
 			default:
 				{
 					Console.WriteLine ("Unknown operating system!");
 					return;
 				}
 			}
-			appHelper.setupDirectory (location);
+			Container IPAs = appHelper.getIPAs (location);
+			int i = 1;
+			int a;
+			foreach (IPAInfo ipaInfo in IPAs.Items) {
+				Console.WriteLine (i + ". >> " + ipaInfo.AppName + " (" + ipaInfo.AppVersion + ")");
+				i++;
+			} 
+			Console.WriteLine ("");
+			Console.Write ("Please enter your selection:  ");
+			if (int.TryParse(Console.ReadLine(), out a)) {
+				try {
+					IPAInfo ipaInfo = IPAs.Items [a - 1];
+					Console.WriteLine ("Cracking " + ipaInfo.AppName);
+				}
+				catch (IndexOutOfRangeException) {
+					Console.WriteLine ("Invalid input, out of range");
+				}
+			} else {
+				Console.WriteLine ("Invalid input");
+			}
 
 		}
 	}
