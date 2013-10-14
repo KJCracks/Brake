@@ -1,5 +1,8 @@
 using System;
 using System.IO;
+using System.Windows.Forms;
+using Renci.SshNet;
+using System.Text.RegularExpressions;
 
 namespace Brake
 {
@@ -36,12 +39,19 @@ namespace Brake
 				return Platform.Windows;
 			}
 		}
-
-		public static void Main (string[] args)
-		{
+		[STAThread]
+		public static void Main (string[] args) {
 			String location;
 			AppHelper appHelper = new AppHelper ();
-			Console.WriteLine ("Hello World!");
+			Console.WriteLine ("Establishing ssh connection");
+			var connectionInfo = new PasswordConnectionInfo ("192.168.1.208", "root", "password");
+			using (var ssh = new SshClient(connectionInfo))
+			{
+				ssh.Connect();
+				var whoami = ssh.RunCommand ("Clutch");
+				Console.WriteLine ("reply: " + whoami.Result);
+			}
+			return;
 			switch (RunningPlatform ()) {
 			case Platform.Mac:
 				{
@@ -50,8 +60,14 @@ namespace Brake
 				}
 			case Platform.Windows: {
 				//windows sucks
-				string path = Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
-				path = Path.Combine (path, "My Music\\iTunes\\iTunes Media\\Mobile Applications\\");
+				FolderBrowserDialog fbd = new FolderBrowserDialog ();
+				DialogResult result = fbd.ShowDialog();
+
+				string[] files = Directory.GetFiles(fbd.SelectedPath);
+				System.Windows.Forms.MessageBox.Show("Files found: " + files.Length.ToString(), "Message");
+
+				Console.WriteLine("PATH: " + files[0]);
+					location = files [0];
 				break;
 			}
 			default:
