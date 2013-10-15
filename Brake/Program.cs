@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
-using Renci.SshNet;
 using System.Text.RegularExpressions;
 
 namespace Brake
@@ -43,33 +42,20 @@ namespace Brake
 		public static void Main (string[] args) {
 			String location;
 			AppHelper appHelper = new AppHelper ();
-			Console.WriteLine ("Establishing ssh connection");
-			var connectionInfo = new PasswordConnectionInfo ("192.168.1.208", "root", "password");
-			using (var ssh = new SshClient(connectionInfo))
-			{
-				ssh.Connect();
-				var whoami = ssh.RunCommand ("Clutch");
-				Console.WriteLine ("reply: " + whoami.Result);
-			}
-			return;
+			Console.WriteLine ("Loading");
 			switch (RunningPlatform ()) {
 			case Platform.Mac:
 				{
 					location = Environment.GetEnvironmentVariable ("HOME") + "/Music/iTunes/iTunes Media/Mobile Applications";
 					break;
 				}
-			case Platform.Windows: {
-				//windows sucks
-				FolderBrowserDialog fbd = new FolderBrowserDialog ();
-				DialogResult result = fbd.ShowDialog();
-
-				string[] files = Directory.GetFiles(fbd.SelectedPath);
-				System.Windows.Forms.MessageBox.Show("Files found: " + files.Length.ToString(), "Message");
-
-				Console.WriteLine("PATH: " + files[0]);
-					location = files [0];
-				break;
-			}
+                    //windows suc
+            case Platform.Windows:
+                {
+                    string location2 = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+                    location = Path.Combine(location2, "iTunes\\iTunes Media\\Mobile Applications");
+                    break;
+                }
 			default:
 				{
 					Console.WriteLine ("Unknown operating system!");
