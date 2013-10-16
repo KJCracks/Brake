@@ -49,7 +49,7 @@ namespace Brake
 					location = Environment.GetEnvironmentVariable ("HOME") + "/Music/iTunes/iTunes Media/Mobile Applications";
 					break;
 				}
-                    //windows suc
+                    //windows sucks
             case Platform.Windows:
                 {
                     string location2 = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
