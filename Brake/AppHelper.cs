@@ -59,8 +59,15 @@ namespace Brake
 							Debug ("Bundle Name: " + plist ["CFBundleExecutable"]);
 							IPAInfo info = new IPAInfo ();
 							info.AppBundle = (string) plist ["CFBundleExecutable"];
-							info.AppName = (string) plist ["CFBundleDisplayName"];
-							info.AppVersion = (string) plist ["CFBundleVersion"];
+                            if (plist.ContainsKey("CFBundleDisplayName"))
+                            {
+                                info.AppName = (string) plist ["CFBundleDisplayName"];
+                            }
+                            else
+                            {
+                                info.AppName = (string) plist ["CFBundleName"];
+                            }
+							info.AppVersion = (string) plist ["CFBundleVersion"];                 
 							info.Location = file.FullName;
 							container.Items.Add (info);
 						}
