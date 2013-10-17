@@ -9,6 +9,7 @@ namespace Brake
 		public string AppVersion;
 		public string AppBundle;
 		public string Location;
+		public string BinaryLocation;
 
 	}
 	public class Container
