@@ -38,7 +38,7 @@
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="Renci.SshNet">
-      <HintPath>..\packages\SSH.NET.2013.4.7\lib\net40\Renci.SshNet.dll</HintPath>
+      <HintPath>..\lib\Renci.SshNet.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
