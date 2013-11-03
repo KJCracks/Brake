@@ -3,12 +3,13 @@ using System.IO;
 using System.Windows.Forms;
 using Renci.SshNet;
 using System.Text.RegularExpressions;
+using System.Net.NetworkInformation;
 
 namespace Brake
 {
 	public class MainClass
 	{
-		public const int DEBUG = 1;
+        public const int DEBUG = 1;
 
 		public enum Platform
 		{
@@ -44,27 +45,43 @@ namespace Brake
 		{
 			String location;
 			AppHelper appHelper = new AppHelper ();
-			Console.WriteLine ("IP address of your device: ");
+			Console.WriteLine ("IP address of your iDevice: ");
 			string host = Console.ReadLine();
-			Console.WriteLine ("ssh port (22 for default)");
-			string portString = Console.ReadLine();
+			string portString = "22";
 			int port;
 			int.TryParse (portString, out port);
-			Console.WriteLine ("username: ");
-			string user = Console.ReadLine ();
-			Console.WriteLine ("password: ");
+            //COMING SOON PORT VERIFICATION
+            //var ping = new Ping();
+            //var reply = ping.Send(host); // 1 minute time out (in ms)
+            //if (reply.Status == IPStatus.Success)
+            //{
+            //    Console.WriteLine("IP Address Valid");
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Unable to SSH to IP");
+            //}
+			string user = "root";
+			Console.WriteLine ("Root Password: ");
 			string pass = Console.ReadLine ();
-
-			Console.WriteLine ("Establishing ssh connection");
+            Console.WriteLine("Is this correct? Y/N");
+            Console.WriteLine("Host:" + host);
+            Console.WriteLine("Root Password:" + pass);
+            string confirm = Console.ReadLine();
+            if (confirm != "y")
+            {
+                return;
+            }
+			Console.WriteLine ("Establishing SSH connection");
 			var connectionInfo = new PasswordConnectionInfo (host, port, user, pass);
 			using (var sftp = new SftpClient(connectionInfo)) {
 				using (var ssh = new SshClient(connectionInfo)) {
-					ssh.Connect ();
+                    ssh.Connect ();
 					sftp.Connect ();
 					var whoami = ssh.RunCommand ("Clutch -b");
 					long b;
 					long.TryParse (whoami.Result, out b);
-					if (b < 1304) {
+					if (b != 13104) {
 						Console.WriteLine ("You're using an old version of Clutch, please update to 1.3.1");
 					}
 					Console.WriteLine ("reply: " + whoami.Result);
