@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.IO;
 using System.Windows.Forms;
 using Renci.SshNet;
@@ -10,6 +11,7 @@ namespace Brake
 	public class MainClass
 	{
         public const int DEBUG = 1;
+
 
 		public enum Platform
 		{
@@ -81,9 +83,29 @@ namespace Brake
 					var whoami = ssh.RunCommand ("Clutch -b");
 					long b;
 					long.TryParse (whoami.Result, out b);
-					if (b != 13104) {
-						Console.WriteLine ("You're using an old version of Clutch, please update to 1.3.1");
-					}
+                    if (b != 13104)
+                    {
+                        Console.WriteLine("You're using an old version of Clutch, please update to 1.3.1");
+                        //COMING SOON download Clutch to device for you
+                        //Console.WriteLine("Would you like it downloading to your device?");
+                        //string dlyn = Console.ReadLine();
+                        //if (dlyn == "y")
+                        //{
+                            //WebClient webClient = new WebClient();
+                        //webClient.DownloadFileAsync(new Uri("https://github.com/aaapps/Clutch/releases/download/1.3.1/Clutch"), @"c:\Clutch");
+                        //sftp.UploadFile ("/usr/bin/Clutch, "c:\Clutch");
+                        //}
+                        //else if (dlyn == "Y")
+                        //{
+                            //WebClient webClient = new WebClient();
+                        //webClient.DownloadFileAsync(new Uri("https://github.com/aaapps/Clutch/releases/download/1.3.1/Clutch"), @"c:\Clutch");
+                        //sftp.UploadFile ("/usr/bin/Clutch, "c:\Clutch");
+                        //}
+                        //else
+                        //{
+                            //return;
+                        //}
+                    }
 					Console.WriteLine ("reply: " + whoami.Result);
 			
 					//return;
