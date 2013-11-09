@@ -1,6 +1,7 @@
 Brake
 ==========
 Brake is a cross-platform distributed cracking utility.
+It is aimed at people that want to crack a large number of iOS apps in a short period of time, and for people that want to crack a really big app really fast!
 
 Requirements
 ==========
@@ -24,3 +25,4 @@ TO-DO:
 - Illegal characters on Windows
 - Cross-platform UI
 - Some customization (cracker name and stuff like that)
+- Upload and submit
