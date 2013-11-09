@@ -85,25 +85,27 @@ namespace Brake
 					long.TryParse (whoami.Result, out b);
                     if (b != 13104)
                     {
-                        Console.WriteLine("You're using an old version of Clutch, please update to 1.3.1");
+                        Console.WriteLine("You're using an old version of Clutch, please update to 1.3.1!");
                         //COMING SOON download Clutch to device for you
-                        //Console.WriteLine("Would you like it downloading to your device?");
+                        //Console.WriteLine("Would you like to download the latest version to your iDevice?");
                         //string dlyn = Console.ReadLine();
                         //if (dlyn == "y")
                         //{
                             //WebClient webClient = new WebClient();
-                        //webClient.DownloadFileAsync(new Uri("https://github.com/aaapps/Clutch/releases/download/1.3.1/Clutch"), @"c:\Clutch");
-                        //sftp.UploadFile ("/usr/bin/Clutch, "c:\Clutch");
+                        //webClient.DownloadFileAsync(new Uri("https://dl.dropboxusercontent.com/s/0a1nijme33hhs98/Clutch?dl=1&token_hash=AAFYCyuQRvWdCVzTmYpoVwcDefFfPtKv5I8tUBH3K7XlAg"), @"c:\\Clutch");
+                            //sftp.UploadFile(, "/usr/bin/Clutch");
+                            //ssh.RunCommand("chmod 755 /usr/bin/Clutch");
                         //}
                         //else if (dlyn == "Y")
                         //{
                             //WebClient webClient = new WebClient();
-                        //webClient.DownloadFileAsync(new Uri("https://github.com/aaapps/Clutch/releases/download/1.3.1/Clutch"), @"c:\Clutch");
-                        //sftp.UploadFile ("/usr/bin/Clutch, "c:\Clutch");
+                        //webClient.DownloadFileAsync(new Uri("https://dl.dropboxusercontent.com/s/0a1nijme33hhs98/Clutch?dl=1&token_hash=AAFYCyuQRvWdCVzTmYpoVwcDefFfPtKv5I8tUBH3K7XlAg"), @"c:\\Clutch");
+                            //sftp.UploadFile(, "/usr/bin/Clutch");
+                            //ssh.RunCommand("chmod 755 /usr/bin/Clutch");
                         //}
                         //else
                         //{
-                            //return;
+                            return;
                         //}
                     }
 					Console.WriteLine ("reply: " + whoami.Result);
