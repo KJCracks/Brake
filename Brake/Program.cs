@@ -91,14 +91,18 @@ namespace Brake
                         //string dlyn = Console.ReadLine();
                         //if (dlyn == "y")
                         //{
-                            //ssh.RunCommand("wget https://github.com/CrackEngine/Clutch/releases/download/1.3.1/Clutch Clutch");
+                            //ssh.RunCommand("apt-get install wget");
+                            //ssh.RunCommand("wget --no-check-certificate -O Clutch https://github.com/CrackEngine/Clutch/releases/download/1.3.1/Clutch");
                             //ssh.RunCommand("mv Clutch /usr/bin/Clutch");
+                            //ssh.RunCommand("chown root:wheel /usr/bin/Clutch");
                             //ssh.RunCommand("chmod 755 /usr/bin/Clutch");
                         //}
                         //else if (dlyn == "Y")
                         //{
-                            //ssh.RunCommand("wget https://github.com/CrackEngine/Clutch/releases/download/1.3.1/Clutch Clutch");
+                            //ssh.RunCommand("apt-get install wget");
+                            //ssh.RunCommand("wget --no-check-certificate -O Clutch https://github.com/CrackEngine/Clutch/releases/download/1.3.1/Clutch");
                             //ssh.RunCommand("mv Clutch /usr/bin/Clutch");
+                            //ssh.RunCommand("chown root:wheel /usr/bin/Clutch");
                             //ssh.RunCommand("chmod 755 /usr/bin/Clutch");
                         //}
                         //else
