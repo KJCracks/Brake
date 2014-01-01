@@ -21,23 +21,23 @@ namespace Brake
 			}
 		}
 
-		public Container getIPAs (String location)
+		public void getIPAs (String location)
 		{
 			DirectoryInfo di = new DirectoryInfo (location);
-			Container container = new Container ();
+			Container container = Container.getContainer ();
 			FileInfo[] files;
 			//byte[] data;
 
 			if (!di.Exists) {
 				Console.WriteLine ("Error: Directory not found?");
-				return null;
+				return;
 			}
 			try {
 				files = di.GetFiles ("*.ipa", SearchOption.TopDirectoryOnly);  
 			} catch (Exception e) {
 				Console.WriteLine ("Error: Exception occured, perhaps no permissions for directory?");
 				Console.WriteLine (e.ToString ());
-				return null;
+				return;
 			}
 			foreach (FileInfo file in files) {
 				Debug ("IPA found: " + file.Name);
@@ -49,7 +49,7 @@ namespace Brake
 							e.Extract (GetTemporaryDirectory (), ExtractExistingFileAction.OverwriteSilently);
 							string plistLocation = Path.Combine (GetTemporaryDirectory (), e.FileName);
 							//unpackDirectory + "/" + e.FileName;
-
+							Debug ("yo yo yo");
 							Dictionary<string, object> plist = (Dictionary<string,object>)Plist.readPlist (plistLocation);
 							Debug ("plist data: " + plist.ToString ());
 							Debug ("Bundle Name: " + plist ["CFBundleExecutable"]);
@@ -63,19 +63,19 @@ namespace Brake
 							info.AppVersion = (string)plist ["CFBundleVersion"];                 
 							info.Location = file.FullName;
 							info.BinaryLocation = e.FileName.Replace ("Info.plist", "") + info.AppBundle;
-							container.Items.Add (info);
+							container.IPAItems.Add (info);
 						}
 					}
 				}
 
 			}
-			using (StreamWriter writer = new StreamWriter("ipas.xml")) {
+			/*using (StreamWriter writer = new StreamWriter("Brake.xml")) {
 				XmlSerializer serializer = new XmlSerializer (typeof(Container));
 				serializer.Serialize (writer, container); 
 				Debug ("serializing data");			
-			}
+			}*/
+			container.SaveXML ();
 			DeleteDirectory (GetTemporaryDirectory ());
-			return container;
 		}
 
 		public String extractIPA (IPAInfo info)
@@ -142,6 +142,7 @@ namespace Brake
 
 		public static string GetTemporaryDirectory ()
 		{
+
 			if (tempDir == null) {
 				tempDir = Path.Combine (Path.GetTempPath (), Path.GetRandomFileName ());
 				Directory.CreateDirectory (tempDir);
