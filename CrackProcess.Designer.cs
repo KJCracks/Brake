@@ -31,6 +31,8 @@
             this.logBox = new System.Windows.Forms.RichTextBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.statusLabel = new System.Windows.Forms.Label();
+            this.appProgressBar = new System.Windows.Forms.ProgressBar();
+            this.appStatusLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // logBox
@@ -55,15 +57,35 @@
             this.statusLabel.AutoSize = true;
             this.statusLabel.Location = new System.Drawing.Point(12, 276);
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(38, 13);
+            this.statusLabel.Size = new System.Drawing.Size(40, 13);
             this.statusLabel.TabIndex = 2;
-            this.statusLabel.Text = "status:";
+            this.statusLabel.Text = "Status:";
+            
+            //
+            // appProgressBar
+            // 
+            this.appProgressBar.Location = new System.Drawing.Point(12, 388);
+            this.appProgressBar.Name = "appProgressBar";
+            this.appProgressBar.Size = new System.Drawing.Size(759, 23);
+            this.appProgressBar.TabIndex = 3;
+            // 
+            // appStatusLabel
+            // 
+            this.appStatusLabel.AutoSize = true;
+            this.appStatusLabel.Location = new System.Drawing.Point(12, 362);
+            this.appStatusLabel.Name = "appStatusLabel";
+            this.appStatusLabel.Size = new System.Drawing.Size(73, 13);
+            this.appStatusLabel.TabIndex = 4;
+            this.appStatusLabel.Text = "Cracking app:";
+            
             // 
             // CrackProcess
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(783, 364);
+            this.ClientSize = new System.Drawing.Size(783, 422);
+            this.Controls.Add(this.appStatusLabel);
+            this.Controls.Add(this.appProgressBar);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.logBox);
@@ -79,6 +101,8 @@
         private System.Windows.Forms.RichTextBox logBox;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label statusLabel;
+        private System.Windows.Forms.ProgressBar appProgressBar;
+        private System.Windows.Forms.Label appStatusLabel;
 
     }
 }

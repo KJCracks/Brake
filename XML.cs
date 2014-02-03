@@ -12,6 +12,8 @@ namespace Brake
         public string AppBundle;
         public string Location;
         public string BinaryLocation;
+        public string IPALocation;
+        public string IPALocationOnDevice;
 
     }
     public class Configuration

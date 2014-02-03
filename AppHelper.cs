@@ -114,13 +114,14 @@ namespace Brake
             String AppDirectory = Path.Combine(GetTemporaryDirectory(), "Payload");
             Debug("AppDirectory: " + AppDirectory);
             //return null;
-            String ZipPath = Path.Combine(GetTemporaryDirectory(), "upload.ipa");
+            String ZipPath = Path.Combine(GetWorkingDirectory(), info.AppBundle + ".ipa");
             using (ZipFile zip = new ZipFile())
             {
                 zip.CompressionLevel = Ionic.Zlib.CompressionLevel.None;
                 zip.AddDirectory(AppDirectory);
                 zip.Save(ZipPath);
             }
+            DeleteDirectory(GetTemporaryDirectory());
             return ZipPath;
         }
 
@@ -133,8 +134,7 @@ namespace Brake
                 Debug("found binary!!");
                 try
                 {
-
-                    var binary = ipa.AddFile(binaryLocation).FileName = info.BinaryLocation;
+                    var binary = ipa.AddFile(binaryLocation).FileName = info.BinaryLocation;   
                 }
                 catch (System.ArgumentException)
                 {
@@ -160,6 +160,7 @@ namespace Brake
         }
 
         private static string tempDir;
+        private static string workingDir;
 
         public static string GetTemporaryDirectory()
         {
@@ -172,8 +173,20 @@ namespace Brake
             return tempDir;
         }
 
+        public static string GetWorkingDirectory()
+        {
+
+            if (workingDir == null)
+            {
+                workingDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+                Directory.CreateDirectory(workingDir);
+            }
+            return workingDir;
+        }
+
         public static void DeleteDirectory(string target_dir)
         {
+            tempDir = null;
             string[] files = Directory.GetFiles(target_dir);
             string[] dirs = Directory.GetDirectories(target_dir);
 

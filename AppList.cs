@@ -15,6 +15,7 @@ namespace Brake
     {
         public Thread crackThread;
         private static Container xml;
+        private CrackProcess crackProcess;
         public AppList()
         {
             InitializeComponent();
@@ -38,36 +39,46 @@ namespace Brake
 
         }
         
-        private void crackApp(IPAInfo ipaInfo)
+        private void beginCrackProcess()
         {
-            CrackProcess cp = new CrackProcess(ipaInfo);
-            cp.Show();
-            crackThread = new Thread(new ThreadStart(cp.beginCracking));
-            
+            crackProcess.Show();
+            crackThread = new Thread(new ThreadStart(crackProcess.runQueue));
             crackThread.Start();
             //cp.beginCracking();
         }
-
-        private void crackButton_Click(object sender, EventArgs e)
+        private void crack(List<int> list)
         {
             if ((crackThread != null) && (crackThread.IsAlive))
             {
                 MessageBox.Show("Already cracking an app, please wait!");
                 return;
             }
-            var selectedItems = listView1.SelectedItems;
 
-            foreach (ListViewItem item in selectedItems)
+            crackProcess = new CrackProcess();
+
+            foreach (int tag in list)
             {
-                IPAInfo info = xml.IPAItems[(int)item.Tag];
+                IPAInfo info = xml.IPAItems[tag];
                 Console.WriteLine("selected " + info.AppBundle + " " + info.Location);
-                crackApp(info);
+                crackProcess.queueIPA(info);
             }
+            beginCrackProcess();
+        }
+        private void crackButton_Click(object sender, EventArgs e)  
+        {          
+            List<int> list = listView1.SelectedItems.Cast<ListViewItem>().Select(x => (int) x.Tag).ToList();
+            crack(list);
         }
 
         private void form_closing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void crackAllButton_Click(object sender, EventArgs e)
+        {
+            List<int> list = listView1.Items.Cast<ListViewItem>().Select(x => (int)x.Tag).ToList();
+            crack(list);
         }
     }
 }

@@ -18,6 +18,7 @@ namespace Brake
             Application.SetCompatibleTextRenderingDefault(false);
             //Load the XML
             Container xml = Container.getContainer();
+			Console.WriteLine ("hello!");
             if (xml.Config.host == null)
             {
                 //load the configuration form
