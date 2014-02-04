@@ -14,6 +14,7 @@ namespace Brake
         public string BinaryLocation;
         public string IPALocation;
         public string IPALocationOnDevice;
+		public Dictionary<string, object> iTunesMetadata;
 
     }
     public class Configuration

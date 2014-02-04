@@ -44,39 +44,47 @@ namespace Brake
             }
             foreach (FileInfo file in files)
             {
-                Debug("IPA found: " + file.Name);
-                using (ZipFile ipa = ZipFile.Read(file.FullName))
-                {
-                    foreach (ZipEntry e in ipa)
-                    {
-                        //Debug ("ZipEntry: " + e.FileName);
-                        if (e.FileName.Contains(".app/Info.plist"))
-                        {
-                            Debug("INFO.PLIST FOUND!!!!! " + GetTemporaryDirectory());
-                            e.Extract(GetTemporaryDirectory(), ExtractExistingFileAction.OverwriteSilently);
-                            string plistLocation = Path.Combine(GetTemporaryDirectory(), e.FileName);
-                            //unpackDirectory + "/" + e.FileName;
-                            Debug("yo yo yo");
-                            Dictionary<string, object> plist = (Dictionary<string, object>)Plist.readPlist(plistLocation);
-                            Debug("plist data: " + plist.ToString());
-                            Debug("Bundle Name: " + plist["CFBundleExecutable"]);
-                            IPAInfo info = new IPAInfo();
-                            info.AppBundle = (string)plist["CFBundleExecutable"];
-                            if (plist.ContainsKey("CFBundleDisplayName"))
-                            {
-                                info.AppName = (string)plist["CFBundleDisplayName"];
-                            }
-                            else
-                            {
-                                info.AppName = (string)plist["CFBundleName"];
-                            }
-                            info.AppVersion = (string)plist["CFBundleVersion"];
-                            info.Location = file.FullName;
-                            info.BinaryLocation = e.FileName.Replace("Info.plist", "") + info.AppBundle;
-                            container.IPAItems.Add(info);
-                        }
-                    }
-                }
+				try {
+					Debug("IPA found: " + file.Name);
+					using (ZipFile ipa = ZipFile.Read(file.FullName))
+					{
+						foreach (ZipEntry e in ipa)
+						{
+
+							Debug("ZipEntry: " + e.FileName);
+							if (e.FileName.Contains(".app/Info.plist"))
+							{
+								Debug("INFO.PLIST FOUND!!!!! " + GetTemporaryDirectory());
+								e.Extract(GetTemporaryDirectory(), ExtractExistingFileAction.OverwriteSilently);
+								string plistLocation = Path.Combine(GetTemporaryDirectory(), e.FileName);
+								//unpackDirectory + "/" + e.FileName;
+								Debug("yo yo yo");
+								Dictionary<string, object> plist = (Dictionary<string, object>)Plist.readPlist(plistLocation);
+								Debug("plist data: " + plist.ToString());
+								Debug("Bundle Name: " + plist["CFBundleExecutable"]);
+								IPAInfo info = new IPAInfo();
+								info.AppBundle = (string)plist["CFBundleExecutable"];
+								if (plist.ContainsKey("CFBundleDisplayName"))
+								{
+									info.AppName = (string)plist["CFBundleDisplayName"];
+								}
+								else
+								{
+									info.AppName = (string)plist["CFBundleName"];
+								}
+								info.AppVersion = (string)plist["CFBundleVersion"];
+								info.Location = file.FullName;
+								info.BinaryLocation = e.FileName.Replace("Info.plist", "") + info.AppBundle;
+								container.IPAItems.Add(info);
+							}
+						}
+					}
+				}
+				catch (Exception ex) {
+					Debug ("Error: could not analyze " + file.Name);
+					Debug ("Error: " + ex.ToString());
+				}
+
 
             }
             /*using (StreamWriter writer = new StreamWriter("Brake.xml")) {
@@ -97,17 +105,19 @@ namespace Brake
                 foreach (ZipEntry e in ipa)
                 {
                     //Debug ("file:" + e.FileName);
-                    if (e.FileName.Contains(".sinf") || e.FileName.Contains(".supp"))
-                    {
-                        //extract it 
-                        Debug(GetTemporaryDirectory());
-                        e.Extract(GetTemporaryDirectory(), ExtractExistingFileAction.OverwriteSilently);
-                    }
-                    else if (e.FileName == info.BinaryLocation)
-                    {
-                        Debug("found binary!!");
-                        e.Extract(GetTemporaryDirectory(), ExtractExistingFileAction.OverwriteSilently);
-                    }
+					if (e.FileName.Contains (".sinf") || e.FileName.Contains (".supp")) {
+						//extract it 
+						Debug (GetTemporaryDirectory ());
+						e.Extract (GetTemporaryDirectory (), ExtractExistingFileAction.OverwriteSilently);
+					} else if (e.FileName == info.BinaryLocation) {
+						Debug ("found binary!!");
+						e.Extract (GetTemporaryDirectory (), ExtractExistingFileAction.OverwriteSilently);
+					} else if (e.FileName == "iTunesMetadata") {
+						e.Extract (GetWorkingDirectory (), ExtractExistingFileAction.OverwriteSilently);
+						string plistLocation = Path.Combine(GetTemporaryDirectory(), e.FileName);
+						info.iTunesMetadata =  (Dictionary<string, object>)Plist.readPlist (plistLocation);
+
+					}
                 }
             }
             //zip!
